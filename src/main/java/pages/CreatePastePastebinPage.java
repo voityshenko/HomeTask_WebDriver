@@ -12,7 +12,7 @@ public class CreatePastePastebinPage {
     private static final String syntaxDropdownLocator = "//input[@class='select2-search__field']";
     private static final String expitationLocatorBegin = "//li[contains(text(),'";
     private static final String expitationLocatorEnd = "')]";
-    private WebDriver driver;
+    private final WebDriver driver;
 
     @FindBy(id = "postform-text")
     private WebElement pasteTextInput;

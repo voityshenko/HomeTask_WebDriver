@@ -36,18 +36,16 @@ public class EmailPage extends AbstractPage {
     }
 
 
-    public EmailPage openPage() {
+    public void openPage() {
         googleCloudWindow = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(EMAIL_URL);
         emailWindow = driver.getWindowHandle();
 
-        return this;
     }
 
-    public EmailPage createRandomEmail() {
+    public void createRandomEmail() {
         emailGenerator.click();
-        return this;
     }
 
     public String copyNewGeneratedEmail() {
@@ -58,12 +56,11 @@ public class EmailPage extends AbstractPage {
     }
 
 
-    public EmailPage checkInbox() {
+    public void checkInbox() {
         driver.switchTo().window(emailWindow);
         driver.navigate().refresh();
         refreshEmail.click();
         driver.switchTo().window(googleCloudWindow);
-        return this;
     }
 
     public String getPriceFromEmail() {
