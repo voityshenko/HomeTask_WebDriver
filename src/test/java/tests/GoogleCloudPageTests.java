@@ -1,6 +1,5 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.EmailPage;
@@ -10,12 +9,11 @@ import pages.GoogleCloudPage;
 public class GoogleCloudPageTests extends BaseTest {
 
     private static final String NUMBER_OF_INSTANCES_VALUE = "4";
-    private static final String EXPECTEDVMCLASS = "VM class: regular";
-    private static final String EXPECTEDINSTANCE = "Instance type: n1-standard-8";
+    private static final String EXPECTED_VMCLASS = "VM class: regular";
+    private static final String EXPECTED_INSTANCE = "Instance type: n1-standard-8";
     private static final String EXPECTEDREGION = "Region: Frankfurt";
-    private static final String EXPECTEDSSD = "2x375 GiB";
-    private static final String EXPECTEDTERM = "Commitment term: 1 Year";
-    public static WebDriver emailDriver;
+    private static final String EXPECTED_SSD = "2x375 GiB";
+    private static final String EXPECTED_TERM = "Commitment term: 1 Year";
 
     @Test
     public void calculatePriceForComputeEngine() {
@@ -35,11 +33,11 @@ public class GoogleCloudPageTests extends BaseTest {
         googleCloudPage.selectCommittedUsage();
         googleCloudPage.pushAddToEstimate();
 
-        Assert.assertEquals(googleCloudPage.getFieldVMClass(), EXPECTEDVMCLASS);
-        Assert.assertTrue(googleCloudPage.getInstanceType().contains(EXPECTEDINSTANCE));
+        Assert.assertEquals(googleCloudPage.getFieldVMClass(), EXPECTED_VMCLASS);
+        Assert.assertTrue(googleCloudPage.getInstanceType().contains(EXPECTED_INSTANCE));
         //      Assert.assertEquals(googleCloudPage.getRegion(), EXPECTEDREGION);
-        Assert.assertTrue(googleCloudPage.getLocalSsd().contains(EXPECTEDSSD));
-        Assert.assertEquals(googleCloudPage.getCommitmentTerm(), EXPECTEDTERM);
+        Assert.assertTrue(googleCloudPage.getLocalSsd().contains(EXPECTED_SSD));
+        Assert.assertEquals(googleCloudPage.getCommitmentTerm(), EXPECTED_TERM);
 
     }
 
@@ -71,4 +69,5 @@ public class GoogleCloudPageTests extends BaseTest {
         Assert.assertTrue((googleCloudPage.getPriceFromCalculator()).contains(emailPage.getPriceFromEmail()));
 
     }
+
 }
