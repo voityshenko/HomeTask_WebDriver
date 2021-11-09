@@ -1,38 +1,21 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import tests.driver.DriverProvider;
 
 public class BaseTest {
-    protected static WebDriver driver;
-
-    @BeforeTest
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(false);
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().deleteAllCookies();
-        driver.manage().window().maximize();
-    }
-
 
     @AfterMethod(alwaysRun = true)
     public void browserTearDown() {
-        driver.manage().deleteAllCookies();
-        driver.quit();
-        driver = null;
+        DriverProvider.getInstance().getDriver().manage().deleteAllCookies();
+        DriverProvider.getInstance().getDriver().quit();
     }
 
     @AfterTest
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
+        if (DriverProvider.getInstance().getDriver() != null) {
+            DriverProvider.getInstance().getDriver().quit();
         }
     }
 }

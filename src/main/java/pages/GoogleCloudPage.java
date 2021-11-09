@@ -8,11 +8,11 @@ import org.openqa.selenium.support.FindBy;
 
 public class GoogleCloudPage extends AbstractPage {
 
+    private static final String NUMBER_OF_INSTANCES_VALUE = "4";
     private final By newFirstFrame = By.xpath("//iframe[contains(@name,'goog_')]");
-
     @FindBy(xpath = "//div[contains (text(),'VM class: regular')]")
     protected WebElement informationInVmClassIsRegular;
-
+    private final String myFrame = "myFrame";
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
     private WebElement dataCenterLocation;
 
@@ -129,7 +129,7 @@ public class GoogleCloudPage extends AbstractPage {
     public void fillNumberOfInstances(String keyForNumberOfInstances) {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame("myFrame");
+        driver.switchTo().frame(myFrame);
         instancesField.click();
         instancesField.sendKeys(keyForNumberOfInstances);
     }
@@ -171,12 +171,6 @@ public class GoogleCloudPage extends AbstractPage {
         localSsdModel.click();
     }
 
-    public void selectDataCenterLocation() {
-        dataCenterLocation.click();
-        waitClickableOfElement(10, dataCenterLocationInFrankfurt);
-        dataCenterLocationInFrankfurt.click();
-    }
-
     public void selectCommittedUsage() {
         committedUsage.click();
         waitClickableOfElement(10, committedUsageValue);
@@ -198,10 +192,6 @@ public class GoogleCloudPage extends AbstractPage {
         return instanceType.split("C")[0];
     }
 
-    public String getRegion() {
-        return regionIsFrankfurt.getText();
-    }
-
     public String getLocalSsd() {
         return localSsdSpace2x375Gib.getText();
     }
@@ -218,7 +208,7 @@ public class GoogleCloudPage extends AbstractPage {
     public void pasteEmail(String email) {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame("myFrame");
+        driver.switchTo().frame(myFrame);
         waitVisibilityOfElement(10, emailEstimateForm);
         emailField.click();
         emailField.sendKeys(email);
@@ -228,7 +218,27 @@ public class GoogleCloudPage extends AbstractPage {
     public String getPriceFromCalculator() {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame("myFrame");
+        driver.switchTo().frame(myFrame);
         return totalEstimatedCostFromComputeEngine.getText();
     }
+
+    public void openCloudCalculator() {
+        openCloudPage();
+        clickSearchButton();
+        sendKeysToSearchForm();
+        clickCalculatorPage();
+    }
+
+    public void fillForm() {
+
+        fillNumberOfInstances(NUMBER_OF_INSTANCES_VALUE);
+        selectSeriesOfMachine();
+        selectMachineType();
+        clickAddGpusCheckBox();
+        selectNumberOfGpus();
+        selectGpuType();
+        selectLocalSsd();
+        selectCommittedUsage();
+    }
+
 }

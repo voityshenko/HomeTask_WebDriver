@@ -5,6 +5,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CreatePastePastebinPage;
 import pages.DetailsPastePastebinPage;
+import tests.driver.DriverProvider;
 
 
 public class PastebinTest extends BaseTest {
@@ -29,7 +30,7 @@ public class PastebinTest extends BaseTest {
     @Test(dataProvider = "valuesPastebinTest")
     public void createPastePastebinTest(String pasteText, String pasteSyntax, String pasteExpiraton, String pasteName) {
 
-        DetailsPastePastebinPage detailsPastePastebinPage = new CreatePastePastebinPage(driver)
+        DetailsPastePastebinPage detailsPastePastebinPage = new CreatePastePastebinPage(DriverProvider.getInstance().getDriver())
                 .openPage()
                 .inputValuesForPaste(pasteText, pasteSyntax, pasteExpiraton, pasteName)
                 .createNewPaste();

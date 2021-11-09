@@ -8,9 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class DetailsPastePastebinPage {
+public class DetailsPastePastebinPage extends AbstractPage {
 
-    private WebDriver driver;
     private final String pasteNameXPath = "//div[@class='info-top']/h1";
 
     @FindBy(xpath = pasteNameXPath)
@@ -22,10 +21,10 @@ public class DetailsPastePastebinPage {
     @FindBy(xpath = "//div[@class='highlighted-code']/div/div/a")
     private WebElement pasteSyntaxLabel;
 
-    public DetailsPastePastebinPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+    protected DetailsPastePastebinPage(WebDriver driver) {
+        super(driver);
     }
+
 
     public String pasteNameLabelText() {
         new WebDriverWait(driver, 10)
