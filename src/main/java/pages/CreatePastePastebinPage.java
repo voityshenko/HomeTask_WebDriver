@@ -4,7 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class CreatePastePastebinPage {
+public class CreatePastePastebinPage extends  AbstractPage{
 
     private static final String HOMEPAGE_URL = "https://pastebin.com";
     private static final String scrollToExpiratonDropdown = "getElementById(\"select2-postform-format-container\")";
@@ -12,7 +12,6 @@ public class CreatePastePastebinPage {
     private static final String syntaxDropdownLocator = "//input[@class='select2-search__field']";
     private static final String expitationLocatorBegin = "//li[contains(text(),'";
     private static final String expitationLocatorEnd = "')]";
-    private final WebDriver driver;
 
     @FindBy(id = "postform-text")
     private WebElement pasteTextInput;
@@ -33,9 +32,9 @@ public class CreatePastePastebinPage {
     private WebElement createNewPasteButton;
 
     public CreatePastePastebinPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
+
 
     public CreatePastePastebinPage openPage() {
         driver.get(HOMEPAGE_URL);

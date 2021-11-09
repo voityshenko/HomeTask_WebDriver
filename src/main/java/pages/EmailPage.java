@@ -36,15 +36,11 @@ public class EmailPage extends AbstractPage {
     }
 
 
-    public void openPage() {
+    public void createRandomEmail() {
         googleCloudWindow = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(EMAIL_URL);
         emailWindow = driver.getWindowHandle();
-
-    }
-
-    public void createRandomEmail() {
         emailGenerator.click();
     }
 
