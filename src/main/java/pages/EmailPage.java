@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 
@@ -31,10 +32,15 @@ public class EmailPage extends AbstractPage {
     @FindBy(xpath = "//button[@id='refresh']")
     private WebElement refreshEmail;
 
+    @FindBy(xpath = "//div[@class='langitem']")
+    private WebElement changeLanguageMenu;
+
+    @FindBy(xpath = "//a[@title='Pусский']")
+    private WebElement russianLanguage;
+
     public EmailPage(WebDriver driver) {
         super(driver);
     }
-
 
     public void createRandomEmail() {
         googleCloudWindow = driver.getWindowHandle();
@@ -51,7 +57,6 @@ public class EmailPage extends AbstractPage {
         return email;
     }
 
-
     public void checkInbox() {
         driver.switchTo().window(emailWindow);
         driver.navigate().refresh();
@@ -66,4 +71,18 @@ public class EmailPage extends AbstractPage {
         return totalEstimatedCostFormMessage.getText();
     }
 
+    public void changeLanguage() {
+        Actions actions = new Actions(driver);
+        WebElement languageMenu = changeLanguageMenu;
+        actions.moveToElement(languageMenu).perform();
+        russianLanguage.click();
+    }
+
+    public void openEmailPage() {
+        driver.get(EMAIL_URL);
+    }
+
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
 }

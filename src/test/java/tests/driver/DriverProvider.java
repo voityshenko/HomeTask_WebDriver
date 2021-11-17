@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 public class DriverProvider {
 
     private static DriverProvider instance;
-    private final WebDriver driver;
+    private static WebDriver driver;
 
     private DriverProvider() {
         driver = DriverFactory.getBrowser("Chrome");

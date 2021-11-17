@@ -2,9 +2,8 @@ package pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class CreatePastePastebinPage extends  AbstractPage{
+public class CreatePastePastebinPage extends AbstractPage {
 
     private static final String HOMEPAGE_URL = "https://pastebin.com";
     private static final String scrollToExpiratonDropdown = "getElementById(\"select2-postform-format-container\")";
@@ -34,7 +33,6 @@ public class CreatePastePastebinPage extends  AbstractPage{
     public CreatePastePastebinPage(WebDriver driver) {
         super(driver);
     }
-
 
     public CreatePastePastebinPage openPage() {
         driver.get(HOMEPAGE_URL);
