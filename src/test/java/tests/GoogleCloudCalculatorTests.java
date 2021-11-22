@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.EmailPage;
 import pages.GoogleCloudCalculator;
 import pages.GoogleCloudPage;
-import tests.driver.DriverProvider;
+import driver.DriverProvider;
 
 
 public class GoogleCloudCalculatorTests extends BaseTest {

@@ -1,5 +1,7 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,9 +10,10 @@ import org.openqa.selenium.support.FindBy;
 
 public class GoogleCloudCalculator extends AbstractPage {
 
+    private final Logger logger = LogManager.getRootLogger();
     private static final String NUMBER_OF_INSTANCES_VALUE = "4";
     private final By newFirstFrame = By.xpath("//iframe[contains(@name,'goog_')]");
-    private final String myFrame = "myFrame";
+    private final String MY_FRAME = "myFrame";
     @FindBy(xpath = "//div[contains (text(),'VM class: regular')]")
     protected WebElement informationInVmClassIsRegular;
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
@@ -102,7 +105,8 @@ public class GoogleCloudCalculator extends AbstractPage {
     private void fillNumberOfInstances(String keyForNumberOfInstances) {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame(myFrame);
+        driver.switchTo().frame(MY_FRAME);
+        logger.debug("Frame is switched");
         instancesField.click();
         instancesField.sendKeys(keyForNumberOfInstances);
     }
@@ -113,6 +117,7 @@ public class GoogleCloudCalculator extends AbstractPage {
         WebElement machineModel = seriesOfMachineModel;
         waitVisibilityOfElement(20, machineModel);
         actions.moveToElement(machineModel);
+        logger.debug("Move to element");
         machineModel.click();
     }
 
@@ -153,6 +158,7 @@ public class GoogleCloudCalculator extends AbstractPage {
 
     public void pushAddToEstimate() {
         addToEstimateButton.click();
+        logger.info("Added to estimate");
     }
 
     public String getFieldVMClass() {
@@ -177,22 +183,25 @@ public class GoogleCloudCalculator extends AbstractPage {
     public void emailEstimateButtonClick() {
         emailEstimateButton.click();
         waitVisibilityOfElement(20, emailForm);
+        logger.info("Estimated price");
     }
 
     public void pasteEmail(String email) {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame(myFrame);
+        driver.switchTo().frame(MY_FRAME);
         waitVisibilityOfElement(10, emailEstimateForm);
         emailField.click();
         emailField.sendKeys(email);
         sendEmail.click();
+        logger.info("Email is passed in field");
     }
 
     public String getPriceFromCalculator() {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
-        driver.switchTo().frame(myFrame);
+        driver.switchTo().frame(MY_FRAME);
+        logger.info("Price is saved");
         return totalEstimatedCostFromComputeEngine.getText();
     }
 
@@ -205,6 +214,7 @@ public class GoogleCloudCalculator extends AbstractPage {
         selectNumberOfGpus();
         selectLocalSsd();
         selectCommittedUsage();
+        logger.info("Form is filled");
     }
 
 

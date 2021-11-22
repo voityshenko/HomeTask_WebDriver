@@ -1,11 +1,15 @@
 package pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class GoogleCloudPage extends AbstractPage {
+
+    private final Logger logger = LogManager.getRootLogger();
 
     @FindBy(xpath = "//input[@aria-label='Search']")
     private WebElement searchButton;
@@ -41,5 +45,6 @@ public class GoogleCloudPage extends AbstractPage {
         clickSearchButton();
         sendKeysToSearchForm();
         clickCalculatorPage();
+        logger.info("Calculator is opened");
     }
 }

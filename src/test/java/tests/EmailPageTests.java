@@ -3,7 +3,7 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.EmailPage;
-import tests.driver.DriverProvider;
+import driver.DriverProvider;
 
 public class EmailPageTests extends BaseTest {
     private static final String EXPECTED_LANGUAGE = "ru";

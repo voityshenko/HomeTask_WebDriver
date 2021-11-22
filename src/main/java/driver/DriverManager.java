@@ -1,4 +1,4 @@
-package tests.driver;
+package driver;
 
 import org.openqa.selenium.WebDriver;
 

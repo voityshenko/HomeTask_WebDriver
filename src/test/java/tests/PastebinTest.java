@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CreatePastePastebinPage;
 import pages.DetailsPastePastebinPage;
-import tests.driver.DriverProvider;
+import driver.DriverProvider;
 
 
 public class PastebinTest extends BaseTest {

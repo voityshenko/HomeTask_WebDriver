@@ -1,9 +1,12 @@
 package tests;
 
+import driver.DriverProvider;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
-import tests.driver.DriverProvider;
+import org.testng.annotations.Listeners;
+import utils.TestListener;
 
+@Listeners({TestListener.class})
 public class BaseTest {
 
     @AfterMethod(alwaysRun = true)

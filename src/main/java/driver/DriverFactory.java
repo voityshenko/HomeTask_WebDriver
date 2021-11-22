@@ -1,4 +1,4 @@
-package tests.driver;
+package driver;
 
 import logger.LoggerProvider;
 import org.openqa.selenium.WebDriver;
@@ -31,6 +31,7 @@ public class DriverFactory {
                 }
             }
         }
+
         return driver;
     }
 
