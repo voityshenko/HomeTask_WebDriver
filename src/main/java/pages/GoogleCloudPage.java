@@ -31,6 +31,7 @@ public class GoogleCloudPage extends AbstractPage {
     }
 
     private void sendKeysToSearchForm() {
+        elementHighlighter(googleSearch);
         googleSearch.sendKeys("Google Cloud Platform Pricing Calculator");
         googleSearch.sendKeys(Keys.ENTER);
     }

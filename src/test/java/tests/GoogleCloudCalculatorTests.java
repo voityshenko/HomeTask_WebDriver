@@ -17,11 +17,11 @@ public class GoogleCloudCalculatorTests extends BaseTest {
     private static final String EXPECTED_TERM = "Commitment term: 1 Year";
 
     @Test
-    public void calculatePriceForComputeEngine() {
+    public void calculatePriceForComputeEngine() throws InterruptedException {
         GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
                 .openCloudCalculator();
         GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver())
-                .fillForm(FormCreator.withCredentialsFromProperty())
+                .fillForm(FormCreator.formData())
                 .pushAddToEstimate();
 
         Assert.assertEquals(googleCloudCalculator.getFieldVMClass(), EXPECTED_VMCLASS);
@@ -32,11 +32,11 @@ public class GoogleCloudCalculatorTests extends BaseTest {
     }
 
     @Test
-    public void checkEmailForComputeEngine() {
+    public void checkEmailForComputeEngine() throws InterruptedException {
         GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
                 .openCloudCalculator();
         GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver())
-                .fillForm(FormCreator.withCredentialsFromProperty())
+                .fillForm(FormCreator.formData())
                 .pushAddToEstimate()
                 .emailEstimateButtonClick();
 
