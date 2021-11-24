@@ -30,6 +30,8 @@ public class CreatePastePastebinPage extends AbstractPage {
     @FindBy(xpath = "//button[contains(text(),'Create New Paste')]")
     private WebElement createNewPasteButton;
 
+    private static final String EXPITATION_LOCATOR = "//li[contains(text(),'%s')]";
+
     public CreatePastePastebinPage(WebDriver driver) {
         super(driver);
     }
@@ -47,7 +49,7 @@ public class CreatePastePastebinPage extends AbstractPage {
         pasteExpiratonDropdown.click();
         scrollTo(scrollToExpiratonDropdown);
 
-        driver.findElement(By.xpath(expitationLocatorBegin + pasteExpiraton + expitationLocatorEnd)).click();
+        driver.findElement(By.xpath(String.format(EXPITATION_LOCATOR, pasteExpiraton ))).click();
         scrollTo(scrollToSyntaxDropdown);
 
         pasteSyntaxDropdown.click();

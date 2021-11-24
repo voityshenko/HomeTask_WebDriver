@@ -44,13 +44,14 @@ public class EmailPage extends AbstractPage {
         super(driver);
     }
 
-    public void createRandomEmail() {
+    public EmailPage createRandomEmail() {
         googleCloudWindow = driver.getWindowHandle();
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(EMAIL_URL);
         emailWindow = driver.getWindowHandle();
         emailGenerator.click();
         logger.info("Random email is created");
+        return this;
     }
 
     public String copyNewGeneratedEmail() {
@@ -77,7 +78,7 @@ public class EmailPage extends AbstractPage {
         return totalEstimatedCostFormMessage.getText();
     }
 
-    public void changeLanguage() {
+    public EmailPage changeLanguage() {
         Actions actions = new Actions(driver);
         WebElement languageMenu = changeLanguageMenu;
         actions.moveToElement(languageMenu).perform();
@@ -86,10 +87,12 @@ public class EmailPage extends AbstractPage {
         }
         russianLanguage.click();
         logger.info("Language is changed");
+        return this;
     }
 
-    public void openEmailPage() {
+    public EmailPage openEmailPage() {
         driver.get(EMAIL_URL);
+        return this;
     }
 
     public String getCurrentUrl() {

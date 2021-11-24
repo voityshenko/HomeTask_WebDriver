@@ -14,19 +14,19 @@ public class DriverFactory {
         WebDriver driver = null;
 
         switch (browserName) {
-            case "Firefox" -> {
-                driver = drivers.get("Firefox");
+            case "firefox" : {
+                driver = drivers.get("firefox");
                 if (driver == null) {
                     driver = new FireFoxDriverManager().getDriver();
                     drivers.put("Firefox", driver);
                     LoggerProvider.instance().getLogger().log(" Firefox Driver is Created ");
                 }
             }
-            case "Chrome" -> {
-                driver = drivers.get("Chrome");
+            case "chrome" : {
+                driver = drivers.get("chrome");
                 if (driver == null) {
                     driver = new ChromeDriverManager().getDriver();
-                    drivers.put("Chrome", driver);
+                    drivers.put("chrome", driver);
                     LoggerProvider.instance().getLogger().log("Chrome Driver is Created ");
                 }
             }

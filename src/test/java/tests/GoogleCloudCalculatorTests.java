@@ -1,11 +1,12 @@
 package tests;
 
+import driver.DriverProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.EmailPage;
 import pages.GoogleCloudCalculator;
 import pages.GoogleCloudPage;
-import driver.DriverProvider;
+import service.FormCreator;
 
 
 public class GoogleCloudCalculatorTests extends BaseTest {
@@ -17,11 +18,11 @@ public class GoogleCloudCalculatorTests extends BaseTest {
 
     @Test
     public void calculatePriceForComputeEngine() {
-        GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver());
-        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver());
-        googleCloudPage.openCloudCalculator();
-        googleCloudCalculator.fillForm();
-        googleCloudCalculator.pushAddToEstimate();
+        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
+                .openCloudCalculator();
+        GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver())
+                .fillForm(FormCreator.withCredentialsFromProperty())
+                .pushAddToEstimate();
 
         Assert.assertEquals(googleCloudCalculator.getFieldVMClass(), EXPECTED_VMCLASS);
         Assert.assertTrue(googleCloudCalculator.getInstanceType().contains(EXPECTED_INSTANCE));
@@ -32,14 +33,16 @@ public class GoogleCloudCalculatorTests extends BaseTest {
 
     @Test
     public void checkEmailForComputeEngine() {
-        GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver());
-        EmailPage emailPage = new EmailPage(DriverProvider.getInstance().getDriver());
-        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver());
-        googleCloudPage.openCloudCalculator();
-        googleCloudCalculator.fillForm();
-        googleCloudCalculator.pushAddToEstimate();
-        googleCloudCalculator.emailEstimateButtonClick();
-        emailPage.createRandomEmail();
+        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
+                .openCloudCalculator();
+        GoogleCloudCalculator googleCloudCalculator = new GoogleCloudCalculator(DriverProvider.getInstance().getDriver())
+                .fillForm(FormCreator.withCredentialsFromProperty())
+                .pushAddToEstimate()
+                .emailEstimateButtonClick();
+
+        EmailPage emailPage = new EmailPage(DriverProvider.getInstance().getDriver())
+                .createRandomEmail();
+
         googleCloudCalculator.pasteEmail(emailPage.copyNewGeneratedEmail());
         emailPage.checkInbox();
 

@@ -1,5 +1,6 @@
 package pages;
 
+import model.Form;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -7,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.List;
 
 public class GoogleCloudCalculator extends AbstractPage {
 
@@ -49,8 +52,8 @@ public class GoogleCloudCalculator extends AbstractPage {
     @FindBy(xpath = "//md-select[@name='series']/parent::md-input-container")
     private WebElement seriesOfMachine;
 
-    @FindBy(xpath = "//md-option[@value='n1']")
-    private WebElement seriesOfMachineModel;
+    @FindBy(xpath = "//md-option")
+    private List<WebElement> series;
 
     @FindBy(xpath = "//label[text()='Machine type']/parent::md-input-container")
     private WebElement machineType;
@@ -64,8 +67,8 @@ public class GoogleCloudCalculator extends AbstractPage {
     @FindBy(xpath = "//md-select[@placeholder='Number of GPUs']")
     private WebElement numberOfGpus;
 
-    @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option[@value='1']")
-    private WebElement numberOfGpusModel;
+    @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option")
+    private List<WebElement> numberOfGpusModel;
 
     @FindBy(xpath = "//md-select[@ng-model='listingCtrl.computeServer.gpuType']")
     private WebElement gpuType;
@@ -111,10 +114,12 @@ public class GoogleCloudCalculator extends AbstractPage {
         instancesField.sendKeys(keyForNumberOfInstances);
     }
 
-    private void selectSeriesOfMachine() {
+    private void selectSeriesOfMachine(String value) {
         seriesOfMachine.click();
         Actions actions = new Actions(driver);
-        WebElement machineModel = seriesOfMachineModel;
+        WebElement machineModel = series.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().get();
         waitVisibilityOfElement(20, machineModel);
         actions.moveToElement(machineModel);
         logger.debug("Move to element");
@@ -132,16 +137,22 @@ public class GoogleCloudCalculator extends AbstractPage {
         gpusCheckBox.click();
     }
 
-    private void selectNumberOfGpus() {
+    private void selectNumberOfGpus(String value) {
         numberOfGpus.click();
-        waitVisibilityOfElement(10, numberOfGpusModel);
-        numberOfGpusModel.click();
+        WebElement numberGpu = numberOfGpusModel.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().get();
+        waitVisibilityOfElement(10, numberGpu);
+        numberGpu.click();
     }
 
-    private void selectGpuType() {
+    private void selectGpuType(String value) {
         gpuType.click();
-        waitVisibilityOfElement(10, gpuTypeModel);
-        gpuTypeModel.click();
+        WebElement gpuType = series.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().get();
+        waitVisibilityOfElement(10, gpuType);
+        gpuType.click();
     }
 
     private void selectLocalSsd() {
@@ -156,9 +167,10 @@ public class GoogleCloudCalculator extends AbstractPage {
         committedUsageValue.click();
     }
 
-    public void pushAddToEstimate() {
+    public GoogleCloudCalculator pushAddToEstimate() {
         addToEstimateButton.click();
         logger.info("Added to estimate");
+        return this;
     }
 
     public String getFieldVMClass() {
@@ -180,10 +192,11 @@ public class GoogleCloudCalculator extends AbstractPage {
         return commitmentTermOneYear.getText();
     }
 
-    public void emailEstimateButtonClick() {
+    public GoogleCloudCalculator emailEstimateButtonClick() {
         emailEstimateButton.click();
         waitVisibilityOfElement(20, emailForm);
         logger.info("Estimated price");
+        return this;
     }
 
     public void pasteEmail(String email) {
@@ -205,16 +218,17 @@ public class GoogleCloudCalculator extends AbstractPage {
         return totalEstimatedCostFromComputeEngine.getText();
     }
 
-    public void fillForm() {
+    public GoogleCloudCalculator fillForm(Form form) {
         fillNumberOfInstances(NUMBER_OF_INSTANCES_VALUE);
-        selectSeriesOfMachine();
+        selectSeriesOfMachine(form.getSeriesOfMachine());
         selectMachineType();
         clickAddGpusCheckBox();
-        selectGpuType();
-        selectNumberOfGpus();
+        selectGpuType(form.getGpuType());
+        selectNumberOfGpus(form.getNumberOfGpus());
         selectLocalSsd();
         selectCommittedUsage();
         logger.info("Form is filled");
+        return this;
     }
 
 

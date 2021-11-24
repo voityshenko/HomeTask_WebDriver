@@ -40,11 +40,12 @@ public class GoogleCloudPage extends AbstractPage {
         switchToCalculator.click();
     }
 
-    public void openCloudCalculator() {
+    public GoogleCloudPage openCloudCalculator() {
         openCloudPage();
         clickSearchButton();
         sendKeysToSearchForm();
         clickCalculatorPage();
         logger.info("Calculator is opened");
+        return this;
     }
 }
