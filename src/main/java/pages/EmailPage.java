@@ -85,6 +85,7 @@ public class EmailPage extends AbstractPage {
         if (logger.isDebugEnabled()) {
             logger.debug("Logger: In debug message");
         }
+        waitClickableOfElement(10,russianLanguage);
         russianLanguage.click();
         logger.info("Language is changed");
         return this;

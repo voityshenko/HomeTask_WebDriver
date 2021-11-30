@@ -16,26 +16,26 @@ public class GoogleCloudCalculator extends AbstractPage {
     private static final String NUMBER_OF_INSTANCES_VALUE = "4";
     private final Logger logger = LogManager.getRootLogger();
     private final By newFirstFrame = By.xpath("//iframe[contains(@name,'goog_')]");
-    private final String MY_FRAME = "myFrame";
+    private static final String MY_FRAME = "myFrame";
     @FindBy(xpath = "//div[contains (text(),'VM class: regular')]")
     protected WebElement informationInVmClassIsRegular;
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
     private WebElement dataCenterLocation;
 
     @FindBy(xpath = "//div[contains (text(),'Instance type: n1-standard-8')]")
-    private WebElement informationInInstanceTypeIncludeN1Standard8;
+    private WebElement instanceValue;
 
     @FindBy(xpath = "//div[contains (text(),'Region: Frankfurt')]")
-    private WebElement regionIsFrankfurt;
+    private WebElement regionValue;
 
     @FindBy(xpath = "//div[contains (text(),'2x375')]")
-    private WebElement localSsdSpace2x375Gib;
+    private WebElement localSsdValue;
 
     @FindBy(xpath = "//div[contains (text(),'Commitment term: 1 Year')]")
-    private WebElement commitmentTermOneYear;
+    private WebElement commitmentTermValue;
 
     @FindBy(xpath = "//div[@class='md-select-menu-container cpc-region-select md-active md-clickable']//md-option[@value='europe-west3']")
-    private WebElement dataCenterLocationInFrankfurt;
+    private WebElement dataCenterLocationValue;
 
     @FindBy(xpath = "//md-select[@ng-model='listingCtrl.computeServer.cud']")
     private WebElement committedUsage;
@@ -66,6 +66,9 @@ public class GoogleCloudCalculator extends AbstractPage {
 
     @FindBy(xpath = "//md-select[@placeholder='Number of GPUs']")
     private WebElement numberOfGpus;
+
+    @FindBy(xpath = "//md-option[@value='n1']")
+    private WebElement seriesOfMachineModel;
 
     @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option")
     private List<WebElement> numberOfGpusModel;
@@ -105,14 +108,14 @@ public class GoogleCloudCalculator extends AbstractPage {
         super(driver);
     }
 
-    private void fillNumberOfInstances(String keyForNumberOfInstances) {
+    private void fillNumberOfInstances() {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
         driver.switchTo().frame(MY_FRAME);
         logger.debug("Frame is switched");
         elementHighlighter(instancesField);
         instancesField.click();
-        instancesField.sendKeys(keyForNumberOfInstances);
+        instancesField.sendKeys(GoogleCloudCalculator.NUMBER_OF_INSTANCES_VALUE);
     }
 
     private void selectSeriesOfMachine(String value) {
@@ -143,11 +146,12 @@ public class GoogleCloudCalculator extends AbstractPage {
 
     private void selectNumberOfGpus(String value) throws InterruptedException {
         numberOfGpus.click();
-//        Thread.sleep(2000);
+        waitForElementLocatedBy(1000, seriesOfMachineModel);
+        Thread.sleep(1000);
         WebElement numberGpu = numberOfGpusModel.stream()
                 .filter(i -> i.getAttribute("value").equals(value))
                 .findFirst().get();
-        waitVisibilityOfElement(10, numberGpu);
+//        waitVisibilityOfElement(10, numberGpu);
         elementHighlighter(numberGpu);
         numberGpu.click();
         logger.info("Number of Gpus is selected");
@@ -193,17 +197,17 @@ public class GoogleCloudCalculator extends AbstractPage {
     }
 
     public String getInstanceType() {
-        waitClickableOfElement(20, informationInInstanceTypeIncludeN1Standard8);
-        String instanceType = informationInInstanceTypeIncludeN1Standard8.getText();
+        waitClickableOfElement(20, instanceValue);
+        String instanceType = instanceValue.getText();
         return instanceType.split("C")[0];
     }
 
     public String getLocalSsd() {
-        return localSsdSpace2x375Gib.getText();
+        return localSsdValue.getText();
     }
 
     public String getCommitmentTerm() {
-        return commitmentTermOneYear.getText();
+        return commitmentTermValue.getText();
     }
 
     public GoogleCloudCalculator emailEstimateButtonClick() {
@@ -233,7 +237,7 @@ public class GoogleCloudCalculator extends AbstractPage {
     }
 
     public GoogleCloudCalculator fillForm(Form form) throws InterruptedException {
-        fillNumberOfInstances(NUMBER_OF_INSTANCES_VALUE);
+        fillNumberOfInstances();
         selectSeriesOfMachine(form.getSeriesOfMachine());
         selectMachineType();
         clickAddGpusCheckBox();

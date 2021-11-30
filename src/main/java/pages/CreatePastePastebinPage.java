@@ -1,16 +1,14 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 public class CreatePastePastebinPage extends AbstractPage {
 
     private static final String HOMEPAGE_URL = "https://pastebin.com";
-    private static final String scrollToExpiratonDropdown = "getElementById(\"select2-postform-format-container\")";
-    private static final String scrollToSyntaxDropdown = "getElementsByClassName(\"content__title -paste\")[0]";
-    private static final String syntaxDropdownLocator = "//input[@class='select2-search__field']";
-    private static final String expitationLocatorBegin = "//li[contains(text(),'";
-    private static final String expitationLocatorEnd = "')]";
+    private static final String EXPIRATION_DROPDOWN = "getElementById(\"select2-postform-format-container\")";
+    private static final String SYNTAX_DROPDOWN = "getElementsByClassName(\"content__title -paste\")[0]";
 
     @FindBy(id = "postform-text")
     private WebElement pasteTextInput;
@@ -30,6 +28,9 @@ public class CreatePastePastebinPage extends AbstractPage {
     @FindBy(xpath = "//button[contains(text(),'Create New Paste')]")
     private WebElement createNewPasteButton;
 
+    @FindBy(xpath = "//input[@class='select2-search__field']")
+    private WebElement syntaxLocator;
+
     private static final String EXPITATION_LOCATOR = "//li[contains(text(),'%s')]";
 
     public CreatePastePastebinPage(WebDriver driver) {
@@ -44,17 +45,19 @@ public class CreatePastePastebinPage extends AbstractPage {
     public CreatePastePastebinPage inputValuesForPaste(String pasteText, String pasteSyntax,
                                                        String pasteExpiraton, String pasteName) {
         pasteTextInput.sendKeys(pasteText);
-        scrollTo(scrollToExpiratonDropdown);
+        scrollTo(EXPIRATION_DROPDOWN);
 
         pasteExpiratonDropdown.click();
-        scrollTo(scrollToExpiratonDropdown);
+        scrollTo(EXPIRATION_DROPDOWN);
 
         driver.findElement(By.xpath(String.format(EXPITATION_LOCATOR, pasteExpiraton ))).click();
-        scrollTo(scrollToSyntaxDropdown);
+        scrollTo(SYNTAX_DROPDOWN);
 
         pasteSyntaxDropdown.click();
-        driver.findElement(By.xpath(syntaxDropdownLocator)).sendKeys(pasteSyntax, Keys.ENTER);
-        pasteNameInput.sendKeys(pasteName);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(syntaxLocator).sendKeys(pasteSyntax,Keys.ENTER).build().perform();
+        actions.sendKeys(pasteNameInput,pasteName).build().perform();
+
         return this;
     }
 
