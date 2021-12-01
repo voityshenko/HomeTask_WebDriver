@@ -23,7 +23,7 @@ public class GoogleCloudPage extends AbstractPage {
     }
 
     private void openCloudPage() {
-        driver.get("https://cloud.google.com/");
+        driver.get("https://cloud.google.com/products/calculator");
     }
 
     private void clickSearchButton() {
@@ -43,9 +43,9 @@ public class GoogleCloudPage extends AbstractPage {
 
     public GoogleCloudPage openCloudCalculator() {
         openCloudPage();
-        clickSearchButton();
-        sendKeysToSearchForm();
-        clickCalculatorPage();
+//        clickSearchButton();
+//        sendKeysToSearchForm();
+//        clickCalculatorPage();
         logger.info("Calculator is opened");
         return this;
     }

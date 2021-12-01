@@ -9,14 +9,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
+import java.time.Duration;
 import java.util.List;
+
+import static org.awaitility.Awaitility.await;
 
 public class GoogleCloudCalculator extends AbstractPage {
 
     private static final String NUMBER_OF_INSTANCES_VALUE = "4";
+    private static final String MY_FRAME = "myFrame";
     private final Logger logger = LogManager.getRootLogger();
     private final By newFirstFrame = By.xpath("//iframe[contains(@name,'goog_')]");
-    private static final String MY_FRAME = "myFrame";
     @FindBy(xpath = "//div[contains (text(),'VM class: regular')]")
     protected WebElement informationInVmClassIsRegular;
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
@@ -144,17 +147,22 @@ public class GoogleCloudCalculator extends AbstractPage {
         gpusCheckBox.click();
     }
 
-    private void selectNumberOfGpus(String value) throws InterruptedException {
+    private void selectNumberOfGpus(String value) {
         numberOfGpus.click();
-        waitForElementLocatedBy(1000, seriesOfMachineModel);
-        Thread.sleep(1000);
-        WebElement numberGpu = numberOfGpusModel.stream()
-                .filter(i -> i.getAttribute("value").equals(value))
-                .findFirst().get();
-//        waitVisibilityOfElement(10, numberGpu);
+        await().atMost(Duration.ofSeconds(5))
+                .with()
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> !numberOfGpusModel.isEmpty());
+        WebElement numberGpu = getNumberOfGpusModel(value);
         elementHighlighter(numberGpu);
         numberGpu.click();
         logger.info("Number of Gpus is selected");
+    }
+
+    private WebElement getNumberOfGpusModel(String value) {
+        return numberOfGpusModel.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().orElseThrow(() -> new RuntimeException("Number Of Gpus Model list is empty!"));
     }
 
     private void selectGpuType(String value) {
