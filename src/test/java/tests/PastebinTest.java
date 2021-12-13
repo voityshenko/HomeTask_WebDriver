@@ -1,15 +1,13 @@
 package tests;
 
+import driver.DriverProvider;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CreatePastePastebinPage;
 import pages.DetailsPastePastebinPage;
-import driver.DriverProvider;
-
 
 public class PastebinTest extends BaseTest {
-
 
     @DataProvider(name = "valuesPastebinTest")
     public Object[][] valuesForPastebinTest() {

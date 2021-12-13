@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TestNG Cucumber suite" verbose="1" parallel="methods">
+    <test name="Cucumber tests">
+        <classes>
+            <class name="com.cucumber.testng.runner.CucumberTestRunner"/>
+        </classes>
+    </test>
+</suite>

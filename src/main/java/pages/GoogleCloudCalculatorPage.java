@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.awaitility.Awaitility.await;
 
-public class GoogleCloudCalculator extends AbstractPage {
+public class GoogleCloudCalculatorPage extends AbstractPage {
 
     private static final String NUMBER_OF_INSTANCES_VALUE = "4";
     private static final String MY_FRAME = "myFrame";
@@ -25,16 +25,16 @@ public class GoogleCloudCalculator extends AbstractPage {
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
     private WebElement dataCenterLocation;
 
-    @FindBy(xpath = "//div[contains (text(),'Instance type: n1-standard-8')]")
+    @FindBy(xpath = "//div[contains (text(),'Instance type')]")
     private WebElement instanceValue;
 
     @FindBy(xpath = "//div[contains (text(),'Region: Frankfurt')]")
     private WebElement regionValue;
 
-    @FindBy(xpath = "//div[contains (text(),'2x375')]")
+    @FindBy(xpath = "//div[contains (text(),'Local SSD')]")
     private WebElement localSsdValue;
 
-    @FindBy(xpath = "//div[contains (text(),'Commitment term: 1 Year')]")
+    @FindBy(xpath = "//div[contains (text(),'Commitment term')]")
     private WebElement commitmentTermValue;
 
     @FindBy(xpath = "//div[@class='md-select-menu-container cpc-region-select md-active md-clickable']//md-option[@value='europe-west3']")
@@ -45,6 +45,9 @@ public class GoogleCloudCalculator extends AbstractPage {
 
     @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option[@value='1']")
     private WebElement committedUsageValue;
+
+    @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option")
+    private List<WebElement> committedUsageList;
 
     @FindBy(xpath = "//button[@aria-label='Add to Estimate']")
     private WebElement addToEstimateButton;
@@ -59,10 +62,13 @@ public class GoogleCloudCalculator extends AbstractPage {
     private List<WebElement> series;
 
     @FindBy(xpath = "//label[text()='Machine type']/parent::md-input-container")
-    private WebElement machineType;
+    private WebElement machineTypeButton;
 
     @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option[@value='CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8']")
     private WebElement computeEngine;
+
+    @FindBy(xpath = "//div[@class='md-select-menu-container md-active md-clickable']//md-option")
+    private List<WebElement> machineTypeValue;
 
     @FindBy(xpath = "//md-checkbox[@aria-label='Add GPUs']")
     private WebElement gpusCheckBox;
@@ -88,6 +94,9 @@ public class GoogleCloudCalculator extends AbstractPage {
     @FindBy(xpath = "//md-option[@id='select_option_439']")
     private WebElement localSsdModel;
 
+    @FindBy(xpath = "//div[contains(text(), '375')]")
+    private List<WebElement> localSsdModels;
+
     @FindBy(xpath = "//button[@id='email_quote']")
     private WebElement emailEstimateButton;
 
@@ -106,22 +115,21 @@ public class GoogleCloudCalculator extends AbstractPage {
     @FindBy(xpath = "//b[contains(text(),'Total')]")
     private WebElement totalEstimatedCostFromComputeEngine;
 
-
-    public GoogleCloudCalculator(WebDriver driver) {
+    public GoogleCloudCalculatorPage(WebDriver driver) {
         super(driver);
     }
 
-    private void fillNumberOfInstances() {
+    public void fillNumberOfInstances(String quantity) {
         WebElement element = driver.findElement(newFirstFrame);
         driver.switchTo().frame(element);
         driver.switchTo().frame(MY_FRAME);
         logger.debug("Frame is switched");
         elementHighlighter(instancesField);
         instancesField.click();
-        instancesField.sendKeys(GoogleCloudCalculator.NUMBER_OF_INSTANCES_VALUE);
+        instancesField.sendKeys(quantity);
     }
 
-    private void selectSeriesOfMachine(String value) {
+    public void selectSeriesOfMachine(String value) {
         seriesOfMachine.click();
         Actions actions = new Actions(driver);
         WebElement machineModel = series.stream()
@@ -134,20 +142,30 @@ public class GoogleCloudCalculator extends AbstractPage {
         machineModel.click();
     }
 
-    private void selectMachineType() {
-        machineType.click();
-        waitVisibilityOfElement(20, computeEngine);
-        elementHighlighter(computeEngine);
-        computeEngine.click();
+    public void selectMachineType(String value) {
+        machineTypeButton.click();
+        await().atMost(Duration.ofSeconds(5))
+                .with()
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> !machineTypeValue.isEmpty());
+        WebElement machineTypeValue = getMachineType(value);
+        elementHighlighter(machineTypeValue);
+        machineTypeValue.click();
     }
 
-    private void clickAddGpusCheckBox() {
+    private WebElement getMachineType(String value) {
+        return machineTypeValue.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().orElseThrow(() -> new RuntimeException("MachineType xpath is changed!"));
+    }
+
+    public void clickAddGpusCheckBox() {
         waitClickableOfElement(10, gpusCheckBox);
         elementHighlighter(gpusCheckBox);
         gpusCheckBox.click();
     }
 
-    private void selectNumberOfGpus(String value) {
+    public void selectNumberOfGpus(String value) {
         numberOfGpus.click();
         await().atMost(Duration.ofSeconds(5))
                 .with()
@@ -165,7 +183,7 @@ public class GoogleCloudCalculator extends AbstractPage {
                 .findFirst().orElseThrow(() -> new RuntimeException("Number Of Gpus Model list is empty!"));
     }
 
-    private void selectGpuType(String value) {
+    public void selectGpuType(String value) {
         gpuType.click();
         WebElement gpuType = series.stream()
                 .filter(i -> i.getAttribute("value").equals(value))
@@ -176,23 +194,44 @@ public class GoogleCloudCalculator extends AbstractPage {
         logger.info("GpuType is selected");
     }
 
-    private void selectLocalSsd() {
+    public void selectLocalSsd(String value) {
         localSsd.click();
-        waitClickableOfElement(10, localSsd);
-        elementHighlighter(localSsdModel);
-        localSsdModel.click();
+        await().atMost(Duration.ofSeconds(5))
+                .with()
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> !localSsdModels.isEmpty());
+        WebElement localSsdValue = getLocalSsd(value);
+        elementHighlighter(localSsdValue);
+        localSsdValue.click();
         logger.info("Local ssd is selected");
     }
 
-    private void selectCommittedUsage() {
+    private WebElement getLocalSsd(String value) {
+        return localSsdModels.stream()
+                .filter(i -> i.getText().contains(value))
+                .findFirst().orElseThrow(() -> new RuntimeException("Local ssd  list is empty!"));
+    }
+
+    public void selectCommittedUsage(String value) {
         committedUsage.click();
-        waitClickableOfElement(10, committedUsageValue);
-        elementHighlighter(committedUsageValue);
-        committedUsageValue.click();
+        await().atMost(Duration.ofSeconds(5))
+                .with()
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> !committedUsageList.isEmpty());
+        WebElement committedUsage = getCommittedUsage(value);
+        waitClickableOfElement(10, committedUsage);
+        elementHighlighter(committedUsage);
+        committedUsage.click();
         logger.info("Term of usage is selected");
     }
 
-    public GoogleCloudCalculator pushAddToEstimate() {
+    private WebElement getCommittedUsage(String value) {
+        return committedUsageList.stream()
+                .filter(i -> i.getAttribute("value").equals(value))
+                .findFirst().orElseThrow(() -> new RuntimeException("Committed Usage list is empty!"));
+    }
+
+    public GoogleCloudCalculatorPage pushAddToEstimate() {
         elementHighlighter(addToEstimateButton);
         addToEstimateButton.click();
         logger.info("Added to estimate");
@@ -218,7 +257,7 @@ public class GoogleCloudCalculator extends AbstractPage {
         return commitmentTermValue.getText();
     }
 
-    public GoogleCloudCalculator emailEstimateButtonClick() {
+    public GoogleCloudCalculatorPage emailEstimateButtonClick() {
         emailEstimateButton.click();
         waitVisibilityOfElement(20, emailForm);
         logger.info("Estimated price");
@@ -237,22 +276,19 @@ public class GoogleCloudCalculator extends AbstractPage {
     }
 
     public String getPriceFromCalculator() {
-        WebElement element = driver.findElement(newFirstFrame);
-        driver.switchTo().frame(element);
-        driver.switchTo().frame(MY_FRAME);
         logger.info("Price is saved");
         return totalEstimatedCostFromComputeEngine.getText();
     }
 
-    public GoogleCloudCalculator fillForm(Form form) throws InterruptedException {
-        fillNumberOfInstances();
+    public GoogleCloudCalculatorPage fillForm(Form form) {
+        fillNumberOfInstances(NUMBER_OF_INSTANCES_VALUE);
         selectSeriesOfMachine(form.getSeriesOfMachine());
-        selectMachineType();
+        selectMachineType("CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8");
         clickAddGpusCheckBox();
         selectGpuType(form.getGpuType());
         selectNumberOfGpus(form.getNumberOfGpus());
-        selectLocalSsd();
-        selectCommittedUsage();
+        selectLocalSsd("2x375");
+        selectCommittedUsage("1");
         logger.info("Form is filled");
         return this;
     }

@@ -1,6 +1,5 @@
 package driver;
 
-import logger.LoggerProvider;
 import org.openqa.selenium.WebDriver;
 
 import java.util.HashMap;
@@ -9,28 +8,29 @@ import java.util.Map;
 public class DriverFactory {
 
     private static final Map<String, WebDriver> drivers = new HashMap<>();
-    private static final String CHROME="chrome";
-    private static final String FIREFOX="firefox";
+    private static final String CHROME = "chrome";
+    private static final String FIREFOX = "firefox";
 
-    public static WebDriver getBrowser(String browserName) {
+    private DriverFactory() {
+    }
+
+    public static WebDriver getBrowser() {
         WebDriver driver = null;
 
-        switch (browserName) {
-            case FIREFOX : {
+        switch (System.getProperty("browser")) {
+            case FIREFOX: {
                 driver = drivers.get(FIREFOX);
                 if (driver == null) {
                     driver = new FireFoxDriverManager().getDriver();
                     drivers.put(FIREFOX, driver);
-                    LoggerProvider.instance().getLogger().log(" Firefox Driver is Created ");
                     break;
                 }
             }
-            case CHROME : {
+            case CHROME: {
                 driver = drivers.get(CHROME);
                 if (driver == null) {
                     driver = new ChromeDriverManager().getDriver();
                     drivers.put(CHROME, driver);
-                    LoggerProvider.instance().getLogger().log("Chrome Driver is Created ");
                     break;
                 }
             }

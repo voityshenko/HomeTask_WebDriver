@@ -43,9 +43,6 @@ public class GoogleCloudPage extends AbstractPage {
 
     public GoogleCloudPage openCloudCalculator() {
         openCloudPage();
-//        clickSearchButton();
-//        sendKeysToSearchForm();
-//        clickCalculatorPage();
         logger.info("Calculator is opened");
         return this;
     }
