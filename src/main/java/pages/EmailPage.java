@@ -40,6 +40,9 @@ public class EmailPage extends AbstractPage {
     @FindBy(xpath = "//a[@title='Pусский']")
     private WebElement russianLanguage;
 
+    @FindBy(id = "ifinbox")
+    private WebElement inboxValue;
+
     public EmailPage(WebDriver driver) {
         super(driver);
     }
@@ -56,7 +59,6 @@ public class EmailPage extends AbstractPage {
 
     public String copyNewGeneratedEmail() {
         String email = newGeneratedEmail.getText();
-        checkInboxButton.click();
         driver.switchTo().window(googleCloudWindow);
         logger.info("Email is copied");
         return email;
@@ -72,10 +74,12 @@ public class EmailPage extends AbstractPage {
 
     public String getPriceFromEmail() {
         driver.switchTo().window(emailWindow);
+        checkInboxButton.click();
+        waitForPageLoadComplete(1000);
         refreshEmail.click();
-        waitForPageLoadComplete(10);
         logger.info("Price from email is saved");
-        return totalEstimatedCostFormMessage.getText();
+        driver.switchTo().frame("ifmail");
+        return totalEstimatedCostFormMessage.getText().trim();
     }
 
     public EmailPage changeLanguage() {
@@ -85,7 +89,7 @@ public class EmailPage extends AbstractPage {
         if (logger.isDebugEnabled()) {
             logger.debug("Logger: In debug message");
         }
-        waitClickableOfElement(10,russianLanguage);
+        waitClickableOfElement(10, russianLanguage);
         russianLanguage.click();
         logger.info("Language is changed");
         return this;

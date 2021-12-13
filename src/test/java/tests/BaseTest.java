@@ -11,7 +11,8 @@ public class BaseTest {
     @AfterTest
     public void tearDown() {
         if (DriverProvider.getInstance().getDriver() != null) {
-            DriverProvider.getInstance().getDriver().quit();
+            DriverProvider.getInstance().getDriver().close();
         }
     }
+
 }

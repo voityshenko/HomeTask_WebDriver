@@ -8,7 +8,7 @@ public class DriverProvider {
     private static WebDriver driver;
 
     private DriverProvider() {
-        driver = DriverFactory.getBrowser("chrome");
+        driver = DriverFactory.getBrowser();
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
     }
@@ -23,5 +23,6 @@ public class DriverProvider {
     public WebDriver getDriver() {
         return driver;
     }
+
 }
 
