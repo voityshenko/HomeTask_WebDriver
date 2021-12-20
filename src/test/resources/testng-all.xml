@@ -1,0 +1,18 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All tests" parallel="methods" thread-count="4">
+    <test name="ApacheHTTPClientTest">
+        <classes>
+            <class name="tests.ApacheHTTPClientTest"/>
+        </classes>
+    </test>
+    <test name="RestAssuredTest">
+        <classes>
+            <class name="tests.RestAssuredTest"/>
+        </classes>
+    </test>
+    <test name="RestTemplateTest">
+        <classes>
+            <class name="tests.RestTemplateTest"/>
+        </classes>
+    </test>
+</suite>
