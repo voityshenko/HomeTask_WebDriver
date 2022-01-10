@@ -2,6 +2,7 @@ package com.cucumber.testng.steps;
 
 import driver.DriverProvider;
 import io.cucumber.java.en.And;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.EmailPage;
@@ -14,6 +15,7 @@ public class EmailSteps {
     private final GoogleCloudCalculatorPage googleCloudCalculatorPage = new GoogleCloudCalculatorPage(DriverProvider.getInstance().getDriver());
     private final EmailPage emailPage = new EmailPage(DriverProvider.getInstance().getDriver());
 
+    @Step("User emails estimate to a new disposable address")
     @And("the user emails estimate to a new disposable address")
     public void theUserEmailsEstimateToANewDisposableAddress() {
         googleCloudCalculatorPage.emailEstimateButtonClick();
@@ -21,6 +23,7 @@ public class EmailSteps {
         googleCloudCalculatorPage.pasteEmail(emailPage.copyNewGeneratedEmail());
     }
 
+    @Step("The email contains correct Total Estimated Cost")
     @And("the email contains correct Total Estimated Cost")
     public void theEmailContainsCorrectTotalEstimatedCost() {
         Assert.assertEquals((StringUtils.getFloatValue(googleCloudCalculatorPage.getPriceFromCalculator())),
