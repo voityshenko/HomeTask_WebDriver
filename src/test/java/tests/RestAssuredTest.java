@@ -1,14 +1,16 @@
 package tests;
 
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import model.webservices.User;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import java.util.Map;
+
+import static org.testng.Assert.assertEquals;
 
 public class RestAssuredTest {
+
+    private static final String USERS = "/users";
 
     @BeforeTest
     public void initTest() {
@@ -17,21 +19,22 @@ public class RestAssuredTest {
 
     @Test
     public void checkStatusCode() {
-        Response statusCodeResponse = RestAssured.when().get("/users").andReturn();
-        Assert.assertTrue(statusCodeResponse.getStatusLine().contains("200 OK"));
+        Response statusCodeResponse = RestAssured.when().get(USERS);
+
+        assertEquals(statusCodeResponse.getStatusCode(), 200);
     }
 
     @Test
     public void checkResponseHeader() {
-        Response responseHeader = RestAssured.when().get("/users").andReturn();
-        Assert.assertTrue(responseHeader.getHeaders().hasHeaderWithName("Content-Type"));
-        Assert.assertEquals(responseHeader.getHeader("Content-Type"), "application/json; charset=utf-8");
+        Response responseHeader = RestAssured.when().get(USERS);
+
+        assertEquals(responseHeader.header("Content-Type"), "application/json; charset=utf-8");
     }
 
     @Test
     public void checkResponseBody() {
-        Response responseBody = RestAssured.when().get("/users").andReturn();
-        User[] users = responseBody.getBody().as(User[].class);
-        Assert.assertEquals(users.length, 10);
+        Response responseBody = RestAssured.when().get(USERS);
+
+        assertEquals(responseBody.as(Map[].class).length, 10);
     }
 }
