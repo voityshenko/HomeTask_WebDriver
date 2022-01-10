@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class EmailPage extends AbstractPage {
@@ -43,6 +45,9 @@ public class EmailPage extends AbstractPage {
     @FindBy(id = "ifinbox")
     private WebElement inboxValue;
 
+    @FindBy(id = "ifinbox")
+    private WebElement inboxList;
+
     public EmailPage(WebDriver driver) {
         super(driver);
     }
@@ -75,8 +80,10 @@ public class EmailPage extends AbstractPage {
     public String getPriceFromEmail() {
         driver.switchTo().window(emailWindow);
         checkInboxButton.click();
-        waitForPageLoadComplete(1000);
-        refreshEmail.click();
+        waitForPageLoadComplete(3000);
+        for (int i = 0; i < 50 && !inboxList.isDisplayed(); i++) {
+            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(refreshEmail)).click();
+        }
         logger.info("Price from email is saved");
         driver.switchTo().frame("ifmail");
         return totalEstimatedCostFormMessage.getText().trim();
