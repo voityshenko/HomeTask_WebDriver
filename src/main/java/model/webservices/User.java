@@ -1,10 +1,8 @@
 package model.webservices;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class User {
     private Integer id;
     private String name;
