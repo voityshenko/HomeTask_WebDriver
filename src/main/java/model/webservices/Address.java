@@ -1,9 +1,8 @@
 package model.webservices;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter @Setter
+@Data
 public class Address {
     private String street;
     private String suite;
