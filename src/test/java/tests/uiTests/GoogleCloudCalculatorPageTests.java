@@ -1,4 +1,4 @@
-package tests;
+package tests.uiTests;
 
 import driver.DriverProvider;
 import model.Form;
@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.EmailPage;
 import pages.GoogleCloudCalculatorPage;
-import pages.GoogleCloudPage;
+import com.cucumber.testng.hooks.BaseTest;
 
 public class GoogleCloudCalculatorPageTests extends BaseTest {
 
@@ -17,9 +17,10 @@ public class GoogleCloudCalculatorPageTests extends BaseTest {
 
     @Test
     public void calculatePriceForComputeEngine() {
-        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
-                .openCloudCalculator();
         GoogleCloudCalculatorPage googleCloudCalculatorPage = new GoogleCloudCalculatorPage(DriverProvider.getInstance().getDriver())
+                .openGoogleCloudCalculatorPage();
+
+        googleCloudCalculatorPage
                 .fillForm(new Form("n1", "NVIDIA_TESLA_P100", "2"))
                 .pushAddToEstimate();
 
@@ -32,9 +33,10 @@ public class GoogleCloudCalculatorPageTests extends BaseTest {
 
     @Test
     public void checkEmailForComputeEngine() {
-        GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver())
-                .openCloudCalculator();
         GoogleCloudCalculatorPage googleCloudCalculatorPage = new GoogleCloudCalculatorPage(DriverProvider.getInstance().getDriver())
+                .openGoogleCloudCalculatorPage();
+
+        googleCloudCalculatorPage
                 .fillForm(new Form("n1", "NVIDIA_TESLA_P100", "2"))
                 .pushAddToEstimate()
                 .emailEstimateButtonClick();

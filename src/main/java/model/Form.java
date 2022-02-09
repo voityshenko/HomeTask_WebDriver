@@ -1,7 +1,14 @@
 package model;
 
-import java.util.Objects;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@Data
+@ToString
 public class Form {
     private String seriesOfMachine;
     private String gpuType;
@@ -13,52 +20,28 @@ public class Form {
         this.numberOfGpus = numberOfGpus;
     }
 
-    public String getGpuType() {
-        return gpuType;
-    }
 
-    public void setGpuType(String gpuType) {
-        this.gpuType = gpuType;
-    }
-
-    public String getNumberOfGpus() {
-        return numberOfGpus;
-    }
-
-    public void setNumberOfGpus(String numberOfGpus) {
-        this.numberOfGpus = numberOfGpus;
-    }
-
-    public String getSeriesOfMachine() {
-        return seriesOfMachine;
-    }
-
-    public void setSeriesOfMachine(String seriesOfMachine) {
-        this.seriesOfMachine = seriesOfMachine;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Form{" +
-                "seriesOfMachine='" + seriesOfMachine + '\'' +
-                ", numberOfGpus='" + numberOfGpus + '\'' +
-                ", gpuType='" + gpuType + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Form)) return false;
-        Form form = (Form) o;
-        return Objects.equals(getSeriesOfMachine(), form.getSeriesOfMachine()) &&
-                Objects.equals(getNumberOfGpus(), form.getNumberOfGpus()) &&
-                Objects.equals(getGpuType(), form.getGpuType());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getGpuType(), getNumberOfGpus(), getSeriesOfMachine());
-    }
+//    @Override
+//    public String toString() {
+//        return "Form{" +
+//                "seriesOfMachine='" + seriesOfMachine + '\'' +
+//                ", numberOfGpus='" + numberOfGpus + '\'' +
+//                ", gpuType='" + gpuType + '\'' +
+//                '}';
+//    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Form)) return false;
+//        Form form = (Form) o;
+//        return Objects.equals(getSeriesOfMachine(), form.getSeriesOfMachine()) &&
+//                Objects.equals(getNumberOfGpus(), form.getNumberOfGpus()) &&
+//                Objects.equals(getGpuType(), form.getGpuType());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getGpuType(), getNumberOfGpus(), getSeriesOfMachine());
+//    }
 }

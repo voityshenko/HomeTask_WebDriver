@@ -1,4 +1,4 @@
-package tests;
+package tests.uiTests;
 
 import driver.DriverProvider;
 import org.testng.Assert;
@@ -6,6 +6,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.CreatePastePastebinPage;
 import pages.DetailsPastePastebinPage;
+import com.cucumber.testng.hooks.BaseTest;
 
 public class PastebinTest extends BaseTest {
 

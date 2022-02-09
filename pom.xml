@@ -8,23 +8,11 @@
     <artifactId>Pastebin</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
-    <parent>
-        <groupId>ru.yandex.qatools.allure</groupId>
-        <artifactId>allure-examples-parent</artifactId>
-        <version>1.0</version>
-    </parent>
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
@@ -90,34 +78,46 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.0.0</version>
+            <version>4.8.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
         <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-core</artifactId>
-            <version>7.0.0</version>
+            <version>4.8.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
-            <version>7.0.0</version>
+            <version>4.8.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
-        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-testng</artifactId>
-            <version>2.13.10</version>
+            <artifactId>allure-cucumber4-jvm</artifactId>
+            <version>2.17.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>4.0.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
     <build>
@@ -135,7 +135,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M1</version>
                 <configuration>
-                    <suiteXmlFiles>src/test/resources/${suite}.xml</suiteXmlFiles>
+                    <suiteXmlFiles>src/test/resources/runners/${suite}.xml</suiteXmlFiles>
                     <parallel>methods</parallel>
                     <useUnlimitedThreads>true</useUnlimitedThreads>
                     <argLine>
@@ -150,23 +150,20 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>3.0.0-M1</version>-->
-<!--                <configuration>-->
-<!--                    <suiteXmlFiles>src/test/resources/${suite}.xml</suiteXmlFiles>-->
-<!--                    <parallel>methods</parallel>-->
-<!--                    <useUnlimitedThreads>true</useUnlimitedThreads>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+                <configuration>
+                    <reportVersion>2.8.1</reportVersion>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <properties>
         <allure.version>2.17.2</allure.version>
-        <suite>testng</suite>
+        <suite>ui-tests-runner</suite>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <aspectj.version>1.9.5</aspectj.version>

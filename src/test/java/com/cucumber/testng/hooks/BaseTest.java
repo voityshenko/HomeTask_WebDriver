@@ -1,4 +1,4 @@
-package tests;
+package com.cucumber.testng.hooks;
 
 import driver.DriverProvider;
 import org.testng.annotations.AfterTest;
@@ -11,7 +11,7 @@ public class BaseTest {
     @AfterTest
     public void tearDown() {
         if (DriverProvider.getInstance().getDriver() != null) {
-            DriverProvider.getInstance().getDriver().close();
+            DriverProvider.getInstance().closeDriver();
         }
     }
 

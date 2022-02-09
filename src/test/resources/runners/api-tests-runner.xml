@@ -2,17 +2,17 @@
 <suite name="All tests" parallel="methods" thread-count="4">
     <test name="ApacheHTTPClientTest">
         <classes>
-            <class name="tests.ApacheHTTPClientTest"/>
+            <class name="tests.apiTests.ApacheHTTPClientTest"/>
         </classes>
     </test>
     <test name="RestAssuredTest">
         <classes>
-            <class name="tests.RestAssuredTest"/>
+            <class name="tests.apiTests.RestAssuredTest"/>
         </classes>
     </test>
     <test name="RestTemplateTest">
         <classes>
-            <class name="tests.RestTemplateTest"/>
+            <class name="tests.apiTests.RestTemplateTest"/>
         </classes>
     </test>
 </suite>

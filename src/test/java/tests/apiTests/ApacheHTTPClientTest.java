@@ -1,4 +1,4 @@
-package tests;
+package tests.apiTests;
 
 import com.google.gson.Gson;
 import model.webservices.User;

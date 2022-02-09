@@ -3,15 +3,14 @@ package com.cucumber.testng.steps;
 import driver.DriverProvider;
 import io.cucumber.java.en.And;
 import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import pages.EmailPage;
 import pages.GoogleCloudCalculatorPage;
+import com.cucumber.testng.hooks.BaseTest;
 import utils.StringUtils;
 
-public class EmailSteps {
-    private static String totalEstimatedCost;
-    WebDriver driver;
+public class EmailSteps extends BaseTest {
+
     private final GoogleCloudCalculatorPage googleCloudCalculatorPage = new GoogleCloudCalculatorPage(DriverProvider.getInstance().getDriver());
     private final EmailPage emailPage = new EmailPage(DriverProvider.getInstance().getDriver());
 

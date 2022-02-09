@@ -2,13 +2,16 @@ package pages;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+import static org.awaitility.Awaitility.given;
 
 
 public class EmailPage extends AbstractPage {
@@ -48,6 +51,9 @@ public class EmailPage extends AbstractPage {
     @FindBy(id = "ifinbox")
     private WebElement inboxList;
 
+    @FindBy(xpath = "//div[@class='lms' and text()='Google Cloud Price Estimate']")
+    private WebElement googleCloudPriceEstimateMail;
+
     public EmailPage(WebDriver driver) {
         super(driver);
     }
@@ -81,11 +87,21 @@ public class EmailPage extends AbstractPage {
         driver.switchTo().window(emailWindow);
         checkInboxButton.click();
         waitForPageLoadComplete(3000);
-        for (int i = 0; i < 50 && !inboxList.isDisplayed(); i++) {
-            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(refreshEmail)).click();
-        }
+
+        given().ignoreException(NoSuchElementException.class)
+                .await().atMost(Duration.ofSeconds(30))
+                .pollInterval(Duration.ofSeconds(3))
+                .until(() -> {
+                    driver.switchTo().parentFrame();
+                    clickOnElement(refreshEmail);
+                    driver.switchTo().frame("ifinbox");
+                    googleCloudPriceEstimateMail.click();
+                    driver.switchTo().parentFrame();
+                    driver.switchTo().frame("ifmail");
+                    return !totalEstimatedCostFormMessage.getText().isEmpty();
+                });
+
         logger.info("Price from email is saved");
-        driver.switchTo().frame("ifmail");
         return totalEstimatedCostFormMessage.getText().trim();
     }
 
