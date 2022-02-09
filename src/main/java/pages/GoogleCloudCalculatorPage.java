@@ -20,6 +20,7 @@ public class GoogleCloudCalculatorPage extends AbstractPage {
     private static final String MY_FRAME = "myFrame";
     private final Logger logger = LogManager.getRootLogger();
     private final By newFirstFrame = By.xpath("//iframe[contains(@name,'goog_')]");
+
     @FindBy(xpath = "//div[contains (text(),'VM class: regular')]")
     protected WebElement informationInVmClassIsRegular;
     @FindBy(xpath = "//md-select[@placeholder='Datacenter location']")
@@ -117,6 +118,11 @@ public class GoogleCloudCalculatorPage extends AbstractPage {
 
     public GoogleCloudCalculatorPage(WebDriver driver) {
         super(driver);
+    }
+
+    public GoogleCloudCalculatorPage openGoogleCloudCalculatorPage(){
+        driver.get("https://cloud.google.com/products/calculator");
+        return this;
     }
 
     public void fillNumberOfInstances(String quantity) {

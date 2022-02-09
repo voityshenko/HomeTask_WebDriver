@@ -3,7 +3,6 @@ Feature: as a user I want to receive an email with correct calculation
   Background:
     Given the user opens Google Cloud Pricing Calculator
 
-
   Scenario Template: TC <id> Total Estimated Cost should be displayed after filling fields and clicking "Add to estimate button"
     And the user enters Number of instances '<Number of instances>'
     And the user selects Series '<seriesMachine>'

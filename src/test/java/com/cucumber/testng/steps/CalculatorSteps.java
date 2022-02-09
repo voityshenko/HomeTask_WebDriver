@@ -8,18 +8,16 @@ import io.cucumber.java.en.When;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 import pages.GoogleCloudCalculatorPage;
-import pages.GoogleCloudPage;
 
 import java.util.Map;
 
 public class CalculatorSteps {
-    private final GoogleCloudPage googleCloudPage = new GoogleCloudPage(DriverProvider.getInstance().getDriver());
     private final GoogleCloudCalculatorPage googleCloudCalculatorPage = new GoogleCloudCalculatorPage(DriverProvider.getInstance().getDriver());
 
     @Step("User opens Google Cloud Pricing Calculator")
     @When("the user opens Google Cloud Pricing Calculator")
     public void openGoogleCloudHomepage() {
-        googleCloudPage.openCloudCalculator();
+        googleCloudCalculatorPage.openGoogleCloudCalculatorPage();
     }
 
     @Step("User enters Number of instances")
@@ -79,11 +77,11 @@ public class CalculatorSteps {
     @Step("Correct Total Estimated Cost is displayed")
     @Then("correct Total Estimated Cost is displayed")
     public void correctTotalEstimatedCostIsDisplayed(DataTable table) {
-        Map data = table.asMap();
-        Assert.assertTrue(googleCloudCalculatorPage.getFieldVMClass().contains((CharSequence) data.get("class")));
-        Assert.assertTrue(googleCloudCalculatorPage.getInstanceType().contains((CharSequence) data.get("instance")));
-        Assert.assertTrue(googleCloudCalculatorPage.getLocalSsd().contains((CharSequence) data.get("localSsd")));
-        Assert.assertTrue(googleCloudCalculatorPage.getCommitmentTerm().contains((CharSequence) data.get("term")));
+        Map<String, String> data = table.asMap(String.class, String.class);
+        Assert.assertTrue(googleCloudCalculatorPage.getFieldVMClass().contains(data.get("class")));
+        Assert.assertTrue(googleCloudCalculatorPage.getInstanceType().contains(data.get("instance")));
+        Assert.assertTrue(googleCloudCalculatorPage.getLocalSsd().contains(data.get("localSsd")));
+        Assert.assertTrue(googleCloudCalculatorPage.getCommitmentTerm().contains(data.get("term")));
     }
 
     @Step("User e-mails the estimate to a new disposable address")

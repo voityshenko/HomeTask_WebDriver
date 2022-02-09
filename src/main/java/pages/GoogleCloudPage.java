@@ -40,10 +40,4 @@ public class GoogleCloudPage extends AbstractPage {
         waitVisibilityOfElement(30, switchToCalculator);
         switchToCalculator.click();
     }
-
-    public GoogleCloudPage openCloudCalculator() {
-        openCloudPage();
-        logger.info("Calculator is opened");
-        return this;
-    }
 }

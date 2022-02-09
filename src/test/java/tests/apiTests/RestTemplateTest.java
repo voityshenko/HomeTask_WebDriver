@@ -1,4 +1,4 @@
-package tests;
+package tests.apiTests;
 
 
 import model.webservices.User;

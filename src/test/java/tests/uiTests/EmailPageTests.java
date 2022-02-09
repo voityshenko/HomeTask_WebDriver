@@ -1,9 +1,10 @@
-package tests;
+package tests.uiTests;
 
 import driver.DriverProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.EmailPage;
+import com.cucumber.testng.hooks.BaseTest;
 
 public class EmailPageTests extends BaseTest {
     private static final String EXPECTED_LANGUAGE = "ru";
